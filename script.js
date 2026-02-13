@@ -117,4 +117,37 @@ document.addEventListener('DOMContentLoaded', () => {
         showScreen(screenInitial);
         selectedNumber = null;
     });
+
+    // Keyboard Support (Enter Key)
+    document.addEventListener('keydown', (e) => {
+        if (e.key !== 'Enter') return;
+
+        // If Close Dialog is open
+        if (!dialogClose.classList.contains('hidden')) {
+            // Default to "Continue" on Enter? Or maybe ignore to strictly force choice?
+            // Let's implement "Continue" as default action on Enter for smoother loop
+            btnContinue.click();
+            return;
+        }
+
+        // If Initial Screen is active
+        if (screenInitial.classList.contains('active')) {
+            btnPlay.click();
+            return;
+        }
+
+        // If Input Screen is active
+        if (screenInput.classList.contains('active')) {
+            if (!btnConfirm.disabled) {
+                btnConfirm.click();
+            }
+            return;
+        }
+
+        // If Result Screen is active
+        if (screenResult.classList.contains('active')) {
+            btnClose.click();
+            return;
+        }
+    });
 });
