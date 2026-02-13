@@ -42,6 +42,8 @@ document.addEventListener('DOMContentLoaded', () => {
         inputNumber.value = '';
         btnConfirm.disabled = true;
         errorMsg.classList.add('hidden');
+        // Auto-focus the input
+        setTimeout(() => inputNumber.focus(), 100);
     });
 
     // Validate Input
@@ -109,6 +111,7 @@ document.addEventListener('DOMContentLoaded', () => {
         showScreen(screenInput);
         inputNumber.value = '';
         btnConfirm.disabled = true;
+        setTimeout(() => inputNumber.focus(), 100);
     });
 
     // Dialog: Exit -> Initial
