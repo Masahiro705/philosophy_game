@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>哲学遊び</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Initial Screen -->
+    <section id="screen-initial" class="screen active">
+        <div class="content">
+            <h1>哲学遊び</h1>
+            <div class="animal-decor">🦁 🐯 🐻</div>
+            <button id="btn-play" class="btn-primary">遊ぶ</button>
+        </div>
+    </section>
+
+    <!-- Input Screen -->
+    <section id="screen-input" class="screen hidden">
+        <div class="content">
+            <h2>数字を選んでください</h2>
+            <p>00 〜 99</p>
+            <input type="number" id="input-number" min="0" max="99" placeholder="00">
+            <p id="error-msg" class="error hidden">有効な数字を入力してください</p>
+            <button id="btn-confirm" class="btn-primary" disabled>決定</button>
+        </div>
+    </section>
+
+    <!-- Card Animation Screen -->
+    <section id="screen-card" class="screen hidden">
+        <div class="content">
+            <div class="card-container">
+                <div class="card" id="anim-card">
+                    <div class="card-face card-back">
+                        <span class="pattern">🐾</span>
+                    </div>
+                    <div class="card-face card-front">
+                        <!-- Content injected via JS -->
+                    </div>
+                </div>
+            </div>
+            <p>カードを引いています...</p>
+        </div>
+    </section>
+
+    <!-- Result Screen -->
+    <section id="screen-result" class="screen hidden">
+        <div class="content">
+            <div class="result-card">
+                <div class="animal-display" id="result-animal"></div>
+                <div class="number-display" id="result-number"></div>
+                <div class="topic-display" id="result-topic"></div>
+            </div>
+            <button id="btn-close" class="btn-secondary">閉じる</button>
+        </div>
+    </section>
+
+    <!-- Close Dialog (Overlay) -->
+    <div id="dialog-close" class="dialog-overlay hidden">
+        <div class="dialog">
+            <h3>どうしますか？</h3>
+            <button id="btn-continue" class="btn-primary">続きで遊ぶ</button>
+            <button id="btn-exit" class="btn-secondary">アプリを閉じる</button>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="data/topics.js"></script>
+    <script src="data/animals.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
