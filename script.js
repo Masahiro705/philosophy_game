@@ -9,12 +9,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Elements
     const btnPlay = document.getElementById('btn-play');
+    const btnSelectionExit = document.getElementById('btn-selection-exit');
     const btnSet1 = document.getElementById('btn-set1');
     const btnSet2 = document.getElementById('btn-set2');
     const inputNumber = document.getElementById('input-number');
     const btnConfirm = document.getElementById('btn-confirm');
     const errorMsg = document.getElementById('error-msg');
     const animCard = document.getElementById('anim-card');
+    const cardFront = animCard.querySelector('.card-front');
 
     const resultAnimal = document.getElementById('result-animal');
     const resultNumber = document.getElementById('result-number');
@@ -44,6 +46,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initial Screen -> Set Selection Screen
     btnPlay.addEventListener('click', () => {
         showScreen(screenSetSelection);
+    });
+
+    btnSelectionExit.addEventListener('click', () => {
+        showScreen(screenInitial);
+        selectedTopicSet = null;
     });
 
     // Set Selection -> Input Screen
@@ -88,6 +95,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Reset animation state
         animCard.classList.remove('flip');
+
+        // Prepare card front with animal emoji
+        const animalIndex = selectedNumber % animals.length;
+        const animal = animals[animalIndex];
+        cardFront.textContent = animal.emoji;
 
         // Simulate drawing delay then flip
         setTimeout(() => {

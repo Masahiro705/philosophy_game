@@ -1,7 +1,9 @@
 :root {
-    --primary-color: #6d4c41; /* Earthy brown */
+    --primary-color: #6d4c41;
+    /* Earthy brown */
     --secondary-color: #8d6e63;
-    --accent-color: #ffcc80; /* Soft Orange */
+    --accent-color: #ffcc80;
+    /* Soft Orange */
     --bg-color: #ecf0f1;
     --text-color: #2c3e50;
     --white: #ffffff;
@@ -19,30 +21,33 @@ body {
     background-color: var(--bg-color);
     color: var(--text-color);
     height: 100vh;
-    overflow: hidden; /* Prevent scrolling like an app */
+    overflow: hidden;
+    /* Prevent scrolling like an app */
     display: flex;
     justify-content: center;
     align-items: center;
     /* Animal pattern background */
-    background-image: 
-        radial-gradient(var(--secondary-color) 1px, transparent 1px), 
+    background-image:
+        radial-gradient(var(--secondary-color) 1px, transparent 1px),
         radial-gradient(var(--secondary-color) 1px, transparent 1px);
     background-size: 20px 20px;
     background-position: 0 0, 10px 10px;
-    background-color: #f7f3e8; /* Creamy background */
+    background-color: #f7f3e8;
+    /* Creamy background */
 }
 
 .screen {
     width: 100%;
     height: 100%;
-    max-width: 480px; /* Mobile width cap */
+    max-width: 480px;
+    /* Mobile width cap */
     max-height: 850px;
     background: rgba(255, 255, 255, 0.9);
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -50,7 +55,8 @@ body {
     text-align: center;
     padding: 2rem;
     transition: opacity 0.3s ease;
-    border-radius: 12px; /* Slight roundness for desktop view */
+    border-radius: 12px;
+    /* Slight roundness for desktop view */
 }
 
 @media (max-width: 480px) {
@@ -89,7 +95,8 @@ h2 {
     letter-spacing: 0.5rem;
 }
 
-.btn-primary, .btn-secondary {
+.btn-primary,
+.btn-secondary {
     padding: 1rem 2rem;
     border: none;
     border-radius: 50px;
@@ -104,12 +111,12 @@ h2 {
 .btn-primary {
     background-color: var(--primary-color);
     color: var(--white);
-    box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
 }
 
 .btn-primary:active {
     transform: scale(0.98);
-    box-shadow: 0 2px 3px rgba(0,0,0,0.2);
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
 }
 
 .btn-primary:disabled {
@@ -178,18 +185,16 @@ input[type="number"]:focus {
     justify-content: center;
     align-items: center;
     border-radius: 15px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
     font-size: 4rem;
 }
 
 .card-back {
-    background: repeating-linear-gradient(
-        45deg,
-        #606dbc,
-        #606dbc 10px,
-        #465298 10px,
-        #465298 20px
-    );
+    background: repeating-linear-gradient(45deg,
+            #606dbc,
+            #606dbc 10px,
+            #465298 10px,
+            #465298 20px);
     color: white;
 }
 
@@ -202,6 +207,11 @@ input[type="number"]:focus {
     background-color: white;
     transform: rotateY(180deg);
     border: 5px solid var(--accent-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 6rem;
+    /* Large emoji */
 }
 
 /* Result Screen */
@@ -209,7 +219,7 @@ input[type="number"]:focus {
     background: white;
     padding: 2rem;
     border-radius: 20px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     margin-bottom: 2rem;
     border: 2px solid var(--primary-color);
     position: relative;
@@ -245,7 +255,7 @@ input[type="number"]:focus {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0,0,0,0.6);
+    background: rgba(0, 0, 0, 0.6);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -259,10 +269,36 @@ input[type="number"]:focus {
     width: 80%;
     max-width: 320px;
     text-align: center;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
 }
 
 .dialog h3 {
     margin-bottom: 2rem;
     color: var(--text-color);
+}
+
+/* Positioning for top-right buttons */
+.btn-exit-top {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid var(--secondary-color);
+    background: white;
+    color: var(--secondary-color);
+    font-size: 1.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    z-index: 10;
+    line-height: 1;
+    padding-bottom: 4px;
+    /* Adjust centering */
+}
+
+.btn-exit-top:hover {
+    background: var(--bg-color);
 }
