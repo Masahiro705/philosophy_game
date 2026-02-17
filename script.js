@@ -286,8 +286,22 @@ document.addEventListener('DOMContentLoaded', () => {
         selectedNumber = null;
     });
 
-    // Keyboard Support (Enter Key)
+    // Keyboard Support (Enter Key and Arrows)
     document.addEventListener('keydown', (e) => {
+        // Handle Arrows for scrolling in selection screens
+        if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+            const activeScreen = document.querySelector('.screen.active');
+            if (activeScreen && (activeScreen.id === 'screen-category-selection' || activeScreen.id === 'screen-card-grid')) {
+                const scrollAmount = 50;
+                activeScreen.scrollBy({
+                    top: e.key === 'ArrowDown' ? scrollAmount : -scrollAmount,
+                    behavior: 'smooth'
+                });
+                e.preventDefault(); // Prevent default browser scroll if any
+                return;
+            }
+        }
+
         if (e.key !== 'Enter') return;
 
         // If Close Dialog is open
@@ -316,6 +330,13 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!btnConfirm.disabled) {
                 btnConfirm.click();
             }
+            return;
+        }
+
+        // If Category Selection/Card Grid is active
+        if (screenCategorySelection.classList.contains('active') || screenCardGrid.classList.contains('active')) {
+            // No default "Enter" action for these screens yet, 
+            // but we might want one later (e.g. select focused button)
             return;
         }
 
