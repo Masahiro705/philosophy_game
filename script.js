@@ -258,12 +258,17 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Dialog: Continue -> Input
+    // Dialog: Continue -> Input or Category Selection
     btnContinue.addEventListener('click', () => {
         dialogClose.classList.add('hidden');
-        showScreen(screenInput);
-        inputNumber.value = '';
-        btnConfirm.disabled = true;
-        setTimeout(() => inputNumber.focus(), 100);
+        if (selectedTopicSet === 2) {
+            initCategorySelection();
+        } else {
+            showScreen(screenInput);
+            inputNumber.value = '';
+            btnConfirm.disabled = true;
+            setTimeout(() => inputNumber.focus(), 100);
+        }
     });
 
     // Dialog: Change Set -> Set Selection
