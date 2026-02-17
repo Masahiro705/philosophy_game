@@ -108,6 +108,7 @@ document.addEventListener('DOMContentLoaded', () => {
             categoryGrid.appendChild(btn);
         });
         showScreen(screenCategorySelection);
+        screenCategorySelection.scrollTop = 0;
     }
 
     function initCardGrid(category) {
@@ -136,6 +137,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         showScreen(screenCardGrid);
+        screenCardGrid.scrollTop = 0;
     }
 
     function selectCard(selectedContainer, finalNumber) {
