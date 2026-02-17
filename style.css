@@ -302,3 +302,82 @@ input[type="number"]:focus {
 .btn-exit-top:hover {
     background: var(--bg-color);
 }
+
+/* Set 2 Redesign Styles */
+.category-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    width: 100%;
+    margin-top: 1rem;
+}
+
+.category-btn {
+    padding: 1rem;
+    background: white;
+    border: 2px solid var(--primary-color);
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: bold;
+    color: var(--primary-color);
+    cursor: pointer;
+    transition: all 0.2s;
+    height: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    line-height: 1.2;
+}
+
+.category-btn:hover {
+    background: var(--accent-color);
+    transform: translateY(-2px);
+}
+
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(5, 1fr);
+    gap: 1rem;
+    margin-top: 1rem;
+    width: 100%;
+    justify-items: center;
+}
+
+.mini-card {
+    width: 100px;
+    height: 150px;
+    perspective: 1000px;
+    cursor: pointer;
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.mini-card .card {
+    width: 100% !important;
+    height: 100% !important;
+    pointer-events: none;
+    position: relative;
+}
+
+.mini-card .card-back {
+    border: 5px solid var(--primary-color);
+    background-color: var(--bg-color);
+}
+
+/* Animation classes */
+.card-zoomed {
+    position: fixed !important;
+    top: 50% !important;
+    left: 50% !important;
+    width: 200px !important;
+    height: 300px !important;
+    transform: translate(-50%, -50%) !important;
+    z-index: 100 !important;
+    margin: 0 !important;
+}
+
+.fade-out {
+    opacity: 0 !important;
+    pointer-events: none;
+    transform: scale(0.8);
+}

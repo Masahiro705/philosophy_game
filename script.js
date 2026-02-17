@@ -2,6 +2,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Screens
     const screenInitial = document.getElementById('screen-initial');
     const screenSetSelection = document.getElementById('screen-set-selection');
+    const screenCategorySelection = document.getElementById('screen-category-selection');
+    const screenCardGrid = document.getElementById('screen-card-grid');
     const screenInput = document.getElementById('screen-input');
     const screenCard = document.getElementById('screen-card');
     const screenResult = document.getElementById('screen-result');
@@ -10,8 +12,13 @@ document.addEventListener('DOMContentLoaded', () => {
     // Elements
     const btnPlay = document.getElementById('btn-play');
     const btnSelectionExit = document.getElementById('btn-selection-exit');
+    const btnCategoryExit = document.getElementById('btn-category-exit');
+    const btnCardGridExit = document.getElementById('btn-card-grid-exit');
     const btnSet1 = document.getElementById('btn-set1');
     const btnSet2 = document.getElementById('btn-set2');
+    const categoryGrid = document.getElementById('category-grid');
+    const cardsContainer = document.getElementById('cards-container');
+    const selectedCategoryTitle = document.getElementById('selected-category-title');
     const inputNumber = document.getElementById('input-number');
     const btnConfirm = document.getElementById('btn-confirm');
     const errorMsg = document.getElementById('error-msg');
@@ -53,6 +60,14 @@ document.addEventListener('DOMContentLoaded', () => {
         selectedTopicSet = null;
     });
 
+    btnCategoryExit.addEventListener('click', () => {
+        showScreen(screenSetSelection);
+    });
+
+    btnCardGridExit.addEventListener('click', () => {
+        showScreen(screenCategorySelection);
+    });
+
     // Set Selection -> Input Screen
     btnSet1.addEventListener('click', () => {
         selectedTopicSet = 1;
@@ -65,12 +80,115 @@ document.addEventListener('DOMContentLoaded', () => {
 
     btnSet2.addEventListener('click', () => {
         selectedTopicSet = 2;
-        showScreen(screenInput);
-        inputNumber.value = '';
-        btnConfirm.disabled = true;
-        errorMsg.classList.add('hidden');
-        setTimeout(() => inputNumber.focus(), 100);
+        initCategorySelection();
     });
+
+    const categories = [
+        { id: 'A', name: '自己・アイデンティティ', start: 0 },
+        { id: 'B', name: '意味・目的・価値観', start: 10 },
+        { id: 'C', name: '感情・幸福', start: 20 },
+        { id: 'D', name: '倫理・善悪', start: 30 },
+        { id: 'E', name: '人間関係・共同体', start: 40 },
+        { id: 'F', name: '知識・真理・信念', start: 50 },
+        { id: 'G', name: '自由意志・責任', start: 60 },
+        { id: 'H', name: '時間・記憶・死', start: 70 },
+        { id: 'I', name: '仕事・お金・消費', start: 80 },
+        { id: 'J', name: 'テクノロジー・将来', start: 90 }
+    ];
+
+    function initCategorySelection() {
+        categoryGrid.innerHTML = '';
+        categories.forEach(cat => {
+            const btn = document.createElement('button');
+            btn.className = 'category-btn';
+            btn.innerHTML = `<span>${cat.id}</span><br>${cat.name}`;
+            btn.addEventListener('click', () => initCardGrid(cat));
+            categoryGrid.appendChild(btn);
+        });
+        showScreen(screenCategorySelection);
+    }
+
+    function initCardGrid(category) {
+        selectedCategoryTitle.textContent = `${category.id}. ${category.name}`;
+        cardsContainer.innerHTML = '';
+
+        // Create random mapping for indices 0-9
+        const indices = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+        for (let i = indices.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [indices[i], indices[j]] = [indices[j], indices[i]];
+        }
+
+        indices.forEach((topicOffset, cardIndex) => {
+            const container = document.createElement('div');
+            container.className = 'mini-card';
+            container.innerHTML = `
+                <div class="card">
+                    <div class="card-face card-back"><span class="pattern">🐾</span></div>
+                </div>
+            `;
+            container.addEventListener('click', () => selectCard(container, category.start + topicOffset));
+            cardsContainer.appendChild(container);
+        });
+
+        showScreen(screenCardGrid);
+    }
+
+    function selectCard(selectedContainer, finalNumber) {
+        // 1. Disable all card clicks
+        document.querySelectorAll('.mini-card').forEach(c => c.style.pointerEvents = 'none');
+
+        // 2. Capture initial position for smooth transition
+        const rect = selectedContainer.getBoundingClientRect();
+        selectedContainer.style.top = `${rect.top}px`;
+        selectedContainer.style.left = `${rect.left}px`;
+        selectedContainer.style.width = `${rect.width}px`;
+        selectedContainer.style.height = `${rect.height}px`;
+        selectedContainer.style.position = 'fixed';
+        selectedContainer.style.margin = '0';
+
+        // Force reflow
+        void selectedContainer.offsetWidth;
+
+        // 3. Zoom selected card, fade others
+        const allCards = document.querySelectorAll('.mini-card');
+        allCards.forEach(c => {
+            if (c === selectedContainer) {
+                c.classList.add('card-zoomed');
+                // These are handled by card-zoomed class in CSS,
+                // but we clarify behavior via JS for the fixed center transition
+                selectedContainer.style.top = '50%';
+                selectedContainer.style.left = '50%';
+            } else {
+                c.classList.add('fade-out');
+            }
+        });
+
+        // 4. Start flip sequence after zoom completes
+        setTimeout(() => {
+            selectedNumber = finalNumber;
+            const card = selectedContainer.querySelector('.card');
+
+            // Ensure card-front is created with the "frame" style
+            const cardFront = document.createElement('div');
+            cardFront.className = 'card-face card-front';
+
+            const animalIndex = selectedNumber % animals.length;
+            const animal = animals[animalIndex];
+            cardFront.textContent = animal.emoji;
+            card.appendChild(cardFront);
+
+            // Brief pause at zoomed state before flip
+            setTimeout(() => {
+                card.classList.add('flip');
+
+                // Wait for flip, then show result
+                setTimeout(() => {
+                    showResult(selectedNumber);
+                }, 800);
+            }, 400);
+        }, 600);
+    }
 
     // Validate Input
     inputNumber.addEventListener('input', (e) => {
