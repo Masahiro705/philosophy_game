@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     // Screens
     const screenInitial = document.getElementById('screen-initial');
+    const screenSetSelection = document.getElementById('screen-set-selection');
     const screenInput = document.getElementById('screen-input');
     const screenCard = document.getElementById('screen-card');
     const screenResult = document.getElementById('screen-result');
@@ -8,6 +9,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Elements
     const btnPlay = document.getElementById('btn-play');
+    const btnSet1 = document.getElementById('btn-set1');
+    const btnSet2 = document.getElementById('btn-set2');
     const inputNumber = document.getElementById('input-number');
     const btnConfirm = document.getElementById('btn-confirm');
     const errorMsg = document.getElementById('error-msg');
@@ -19,10 +22,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnClose = document.getElementById('btn-close');
 
     const btnContinue = document.getElementById('btn-continue');
+    const btnChangeSet = document.getElementById('btn-change-set');
     const btnExit = document.getElementById('btn-exit');
 
     // State
     let selectedNumber = null;
+    let selectedTopicSet = null; // Will be 1 or 2
 
     // Helper: Show specific screen
     function showScreen(screen) {
@@ -36,13 +41,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Event Listeners
 
-    // Initial Screen -> Input Screen
+    // Initial Screen -> Set Selection Screen
     btnPlay.addEventListener('click', () => {
+        showScreen(screenSetSelection);
+    });
+
+    // Set Selection -> Input Screen
+    btnSet1.addEventListener('click', () => {
+        selectedTopicSet = 1;
         showScreen(screenInput);
         inputNumber.value = '';
         btnConfirm.disabled = true;
         errorMsg.classList.add('hidden');
-        // Auto-focus the input
+        setTimeout(() => inputNumber.focus(), 100);
+    });
+
+    btnSet2.addEventListener('click', () => {
+        selectedTopicSet = 2;
+        showScreen(screenInput);
+        inputNumber.value = '';
+        btnConfirm.disabled = true;
+        errorMsg.classList.add('hidden');
         setTimeout(() => inputNumber.focus(), 100);
     });
 
@@ -87,10 +106,13 @@ document.addEventListener('DOMContentLoaded', () => {
         // For animals, we map 0-99 to 0-99 index. 
         // If animals array is smaller/larger, use modulo.
         const animalIndex = number % animals.length;
-        const topicIndex = number % philosophyTopics.length;
+
+        // Choose topic set based on user selection
+        const topicsArray = selectedTopicSet === 2 ? philosophyTopicsSet2 : philosophyTopics;
+        const topicIndex = number % topicsArray.length;
 
         const animal = animals[animalIndex];
-        const topic = philosophyTopics[topicIndex];
+        const topic = topicsArray[topicIndex];
 
         // Populate result
         resultAnimal.textContent = animal.emoji;
@@ -112,6 +134,14 @@ document.addEventListener('DOMContentLoaded', () => {
         inputNumber.value = '';
         btnConfirm.disabled = true;
         setTimeout(() => inputNumber.focus(), 100);
+    });
+
+    // Dialog: Change Set -> Set Selection
+    btnChangeSet.addEventListener('click', () => {
+        dialogClose.classList.add('hidden');
+        showScreen(screenSetSelection);
+        selectedNumber = null;
+        selectedTopicSet = null;
     });
 
     // Dialog: Exit -> Initial
@@ -136,6 +166,13 @@ document.addEventListener('DOMContentLoaded', () => {
         // If Initial Screen is active
         if (screenInitial.classList.contains('active')) {
             btnPlay.click();
+            return;
+        }
+
+        // If Set Selection Screen is active
+        if (screenSetSelection.classList.contains('active')) {
+            // Default to Set 1 on Enter
+            btnSet1.click();
             return;
         }
 

@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>哲学遊び</title>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
     <!-- Initial Screen -->
@@ -14,6 +16,15 @@
             <h1>哲学遊び</h1>
             <div class="animal-decor">🦁 🐯 🐻</div>
             <button id="btn-play" class="btn-primary">遊ぶ</button>
+        </div>
+    </section>
+
+    <!-- Set Selection Screen -->
+    <section id="screen-set-selection" class="screen hidden">
+        <div class="content">
+            <h2>哲学セットを選んでください</h2>
+            <button id="btn-set1" class="btn-primary">哲学セット1</button>
+            <button id="btn-set2" class="btn-primary">哲学セット2</button>
         </div>
     </section>
 
@@ -62,13 +73,16 @@
         <div class="dialog">
             <h3>どうしますか？</h3>
             <button id="btn-continue" class="btn-primary">続きで遊ぶ</button>
+            <button id="btn-change-set" class="btn-primary">セットを変える</button>
             <button id="btn-exit" class="btn-secondary">アプリを閉じる</button>
         </div>
     </div>
 
     <!-- Scripts -->
     <script src="data/topics.js"></script>
+    <script src="data/topics_set2.js"></script>
     <script src="data/animals.js"></script>
     <script src="script.js"></script>
 </body>
+
 </html>
