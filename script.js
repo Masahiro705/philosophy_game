@@ -85,15 +85,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const categories = [
         { id: 'A', name: '自己・アイデンティティ', start: 0 },
-        { id: 'B', name: '意味・目的・価値観', start: 10 },
-        { id: 'C', name: '感情・幸福', start: 20 },
-        { id: 'D', name: '倫理・善悪', start: 30 },
-        { id: 'E', name: '人間関係・共同体', start: 40 },
-        { id: 'F', name: '知識・真理・信念', start: 50 },
-        { id: 'G', name: '自由意志・責任', start: 60 },
-        { id: 'H', name: '時間・記憶・死', start: 70 },
-        { id: 'I', name: '仕事・お金・消費', start: 80 },
-        { id: 'J', name: 'テクノロジー・将来', start: 90 }
+        { id: 'B', name: '意味・目的・価値観', start: 9 },
+        { id: 'C', name: '感情・幸福・ウェルビーイング', start: 18 },
+        { id: 'D', name: '倫理・善悪・「べき」', start: 27 },
+        { id: 'E', name: '人間関係・共同体', start: 36 },
+        { id: 'F', name: '知識・真理・信念', start: 45 },
+        { id: 'G', name: '自由意志・責任・運命', start: 54 },
+        { id: 'H', name: '時間・記憶・死', start: 63 },
+        { id: 'I', name: '仕事・お金・消費', start: 72 },
+        { id: 'J', name: 'テクノロジー・メディア・未来', start: 81 }
     ];
 
     function initCategorySelection() {
@@ -117,8 +117,8 @@ document.addEventListener('DOMContentLoaded', () => {
         selectedCategoryTitle.textContent = `${category.id}. ${category.name}`;
         cardsContainer.innerHTML = '';
 
-        // Create random mapping for indices 0-9
-        const indices = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+        // Create random mapping for indices 0-8
+        const indices = [0, 1, 2, 3, 4, 5, 6, 7, 8];
         for (let i = indices.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
             [indices[i], indices[j]] = [indices[j], indices[i]];
