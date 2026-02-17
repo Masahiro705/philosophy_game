@@ -97,6 +97,8 @@ document.addEventListener('DOMContentLoaded', () => {
     ];
 
     function initCategorySelection() {
+        // Cleanup any lingering zoom cards in body
+        document.querySelectorAll('body > .mini-card').forEach(card => card.remove());
         categoryGrid.innerHTML = '';
         categories.forEach(cat => {
             const btn = document.createElement('button');
@@ -109,6 +111,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function initCardGrid(category) {
+        // Cleanup any lingering zoom cards in body
+        document.querySelectorAll('body > .mini-card').forEach(card => card.remove());
         selectedCategoryTitle.textContent = `${category.id}. ${category.name}`;
         cardsContainer.innerHTML = '';
 
@@ -138,33 +142,51 @@ document.addEventListener('DOMContentLoaded', () => {
         // 1. Disable all card clicks
         document.querySelectorAll('.mini-card').forEach(c => c.style.pointerEvents = 'none');
 
-        // 2. Capture initial position for smooth transition
+        // 2. Capture initial position and calculate centers
         const rect = selectedContainer.getBoundingClientRect();
+
+        // Calculate card center (origin)
+        const cardCenterX = rect.left + rect.width / 2;
+        const cardCenterY = rect.top + rect.height / 2;
+
+        // Calculate viewport center (destination)
+        const viewportCenterX = window.innerWidth / 2;
+        const viewportCenterY = window.innerHeight / 2;
+
+        // 3. Move card to body to avoid parent transform影響
+        const parentContainer = selectedContainer.parentElement;
+        document.body.appendChild(selectedContainer);
+
+        // Set initial fixed position at card's current location
+        selectedContainer.style.position = 'fixed';
         selectedContainer.style.top = `${rect.top}px`;
         selectedContainer.style.left = `${rect.left}px`;
         selectedContainer.style.width = `${rect.width}px`;
         selectedContainer.style.height = `${rect.height}px`;
-        selectedContainer.style.position = 'fixed';
         selectedContainer.style.margin = '0';
 
         // Force reflow
         void selectedContainer.offsetWidth;
 
-        // 3. Zoom selected card, fade others
+        // 4. Zoom selected card to viewport center, fade others
         const allCards = document.querySelectorAll('.mini-card');
         allCards.forEach(c => {
             if (c === selectedContainer) {
                 c.classList.add('card-zoomed');
-                // These are handled by card-zoomed class in CSS,
-                // but we clarify behavior via JS for the fixed center transition
-                selectedContainer.style.top = '50%';
-                selectedContainer.style.left = '50%';
+                // Move card center to viewport center by calculating top-left position
+                // For a 200x300 card, we need to offset by half its dimensions
+                const finalWidth = 200;
+                const finalHeight = 300;
+                selectedContainer.style.top = `${viewportCenterY - finalHeight / 2}px`;
+                selectedContainer.style.left = `${viewportCenterX - finalWidth / 2}px`;
+                selectedContainer.style.width = `${finalWidth}px`;
+                selectedContainer.style.height = `${finalHeight}px`;
             } else {
                 c.classList.add('fade-out');
             }
         });
 
-        // 4. Start flip sequence after zoom completes
+        // 5. Start flip sequence after zoom completes
         setTimeout(() => {
             selectedNumber = finalNumber;
             const card = selectedContainer.querySelector('.card');
@@ -184,12 +206,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 // Wait for flip, then show result
                 setTimeout(() => {
+                    // Safe cleanup before showing result
+                    document.querySelectorAll('body > .mini-card').forEach(card => card.remove());
                     showResult(selectedNumber);
                 }, 800);
             }, 400);
         }, 600);
     }
-
     // Validate Input
     inputNumber.addEventListener('input', (e) => {
         const val = parseInt(e.target.value);
@@ -232,6 +255,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     function showResult(number) {
+        // Aggressive cleanup: remove ANY lingering transition elements
+        document.querySelectorAll('body > .mini-card, .card-zoomed').forEach(el => el.remove());
+
         // Get data
         // For animals, we map 0-99 to 0-99 index. 
         // If animals array is smaller/larger, use modulo.
