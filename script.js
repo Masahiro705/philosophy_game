@@ -103,16 +103,16 @@ document.addEventListener('DOMContentLoaded', () => {
     ];
 
     const categoriesSet3 = [
-        { id: 'A', name: 'コーヒー、食べ物、持ち物から始める問い', start: 0 },
-        { id: 'B', name: '時間と日常の流れについての問い', start: 10 },
-        { id: 'C', name: '会話、沈黙、言葉についての問い', start: 20 },
-        { id: 'D', name: '人間関係と距離感についての問い', start: 30 },
-        { id: 'E', name: '自分とは何かを身近に考える問い', start: 40 },
-        { id: 'F', name: '記憶、写真、思い出についての問い', start: 50 },
-        { id: 'G', name: '仕事、お金、役に立つことについての問い', start: 60 },
-        { id: 'H', name: '美しさ、身体、感覚についての問い', start: 70 },
-        { id: 'I', name: 'スマホ、SNS、情報についての問い', start: 80 },
-        { id: 'J', name: '小さな習慣から人生に触れる問い', start: 90 }
+        { id: 'A', name: 'コーヒー、食べ物、持ち物', start: 0 },
+        { id: 'B', name: '時間と日常の流れ', start: 9 },
+        { id: 'C', name: '会話、沈黙、言葉', start: 18 },
+        { id: 'D', name: '人間関係と距離感', start: 27 },
+        { id: 'E', name: '自分とは何か', start: 36 },
+        { id: 'F', name: '記憶、写真、思い出', start: 45 },
+        { id: 'G', name: '仕事、お金、役に立つこと', start: 54 },
+        { id: 'H', name: '美しさ、身体、感覚', start: 63 },
+        { id: 'I', name: 'スマホ、SNS、情報', start: 72 },
+        { id: 'J', name: '小さな習慣から人生に触れる', start: 81 }
     ];
 
     function initCategorySelection() {
@@ -139,8 +139,8 @@ document.addEventListener('DOMContentLoaded', () => {
         selectedCategoryTitle.textContent = `${category.id}. ${category.name}`;
         cardsContainer.innerHTML = '';
 
-        // Generate mapping for indices based on topic set (9 items for Set2, 10 items for Set3)
-        const numItems = selectedTopicSet === 3 ? 10 : 9;
+        // Both Set 2 and Set 3 now use 9 items
+        const numItems = 9;
         const indices = Array.from({ length: numItems }, (_, i) => i);
 
         // Randomize
@@ -161,14 +161,9 @@ document.addEventListener('DOMContentLoaded', () => {
             cardsContainer.appendChild(container);
         });
 
-        // Set appropriate grid layout (3x3 vs 5x2)
-        if (selectedTopicSet === 3) {
-            cardsContainer.classList.add('cards-grid-10');
-            cardsContainer.classList.remove('cards-grid');
-        } else {
-            cardsContainer.classList.add('cards-grid');
-            cardsContainer.classList.remove('cards-grid-10');
-        }
+        // Set appropriate grid layout (both use 3x3 layout now)
+        cardsContainer.classList.add('cards-grid');
+        cardsContainer.classList.remove('cards-grid-10');
 
         showScreen(screenCardGrid);
         screenCardGrid.scrollTop = 0;
