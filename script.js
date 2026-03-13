@@ -16,6 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnCardGridExit = document.getElementById('btn-card-grid-exit');
     const btnSet1 = document.getElementById('btn-set1');
     const btnSet2 = document.getElementById('btn-set2');
+    const btnSet3 = document.getElementById('btn-set3');
     const categoryGrid = document.getElementById('category-grid');
     const cardsContainer = document.getElementById('cards-container');
     const selectedCategoryTitle = document.getElementById('selected-category-title');
@@ -36,7 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // State
     let selectedNumber = null;
-    let selectedTopicSet = null; // Will be 1 or 2
+    let selectedTopicSet = null; // Will be 1, 2, or 3
 
     // Helper: Show specific screen
     function showScreen(screen) {
@@ -83,7 +84,12 @@ document.addEventListener('DOMContentLoaded', () => {
         initCategorySelection();
     });
 
-    const categories = [
+    btnSet3.addEventListener('click', () => {
+        selectedTopicSet = 3;
+        initCategorySelection();
+    });
+
+    const categoriesSet2 = [
         { id: 'A', name: '自己・アイデンティティ', start: 0 },
         { id: 'B', name: '意味・目的・価値観', start: 9 },
         { id: 'C', name: '感情・幸福・ウェルビーイング', start: 18 },
@@ -96,10 +102,26 @@ document.addEventListener('DOMContentLoaded', () => {
         { id: 'J', name: 'テクノロジー・メディア・未来', start: 81 }
     ];
 
+    const categoriesSet3 = [
+        { id: 'A', name: 'コーヒー、食べ物、持ち物から始める問い', start: 0 },
+        { id: 'B', name: '時間と日常の流れについての問い', start: 10 },
+        { id: 'C', name: '会話、沈黙、言葉についての問い', start: 20 },
+        { id: 'D', name: '人間関係と距離感についての問い', start: 30 },
+        { id: 'E', name: '自分とは何かを身近に考える問い', start: 40 },
+        { id: 'F', name: '記憶、写真、思い出についての問い', start: 50 },
+        { id: 'G', name: '仕事、お金、役に立つことについての問い', start: 60 },
+        { id: 'H', name: '美しさ、身体、感覚についての問い', start: 70 },
+        { id: 'I', name: 'スマホ、SNS、情報についての問い', start: 80 },
+        { id: 'J', name: '小さな習慣から人生に触れる問い', start: 90 }
+    ];
+
     function initCategorySelection() {
         // Cleanup any lingering zoom cards in body
         document.querySelectorAll('body > .mini-card').forEach(card => card.remove());
         categoryGrid.innerHTML = '';
+
+        const categories = selectedTopicSet === 3 ? categoriesSet3 : categoriesSet2;
+
         categories.forEach(cat => {
             const btn = document.createElement('button');
             btn.className = 'category-btn';
@@ -117,8 +139,11 @@ document.addEventListener('DOMContentLoaded', () => {
         selectedCategoryTitle.textContent = `${category.id}. ${category.name}`;
         cardsContainer.innerHTML = '';
 
-        // Create random mapping for indices 0-8
-        const indices = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+        // Generate mapping for indices based on topic set (9 items for Set2, 10 items for Set3)
+        const numItems = selectedTopicSet === 3 ? 10 : 9;
+        const indices = Array.from({ length: numItems }, (_, i) => i);
+
+        // Randomize
         for (let i = indices.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
             [indices[i], indices[j]] = [indices[j], indices[i]];
@@ -135,6 +160,15 @@ document.addEventListener('DOMContentLoaded', () => {
             container.addEventListener('click', () => selectCard(container, category.start + topicOffset));
             cardsContainer.appendChild(container);
         });
+
+        // Set appropriate grid layout (3x3 vs 5x2)
+        if (selectedTopicSet === 3) {
+            cardsContainer.classList.add('cards-grid-10');
+            cardsContainer.classList.remove('cards-grid');
+        } else {
+            cardsContainer.classList.add('cards-grid');
+            cardsContainer.classList.remove('cards-grid-10');
+        }
 
         showScreen(screenCardGrid);
         screenCardGrid.scrollTop = 0;
@@ -266,7 +300,15 @@ document.addEventListener('DOMContentLoaded', () => {
         const animalIndex = number % animals.length;
 
         // Choose topic set based on user selection
-        const topicsArray = selectedTopicSet === 2 ? philosophyTopicsSet2 : philosophyTopics;
+        let topicsArray;
+        if (selectedTopicSet === 3) {
+            topicsArray = philosophyTopicsSet3;
+        } else if (selectedTopicSet === 2) {
+            topicsArray = philosophyTopicsSet2;
+        } else {
+            topicsArray = philosophyTopics;
+        }
+
         const topicIndex = number % topicsArray.length;
 
         const animal = animals[animalIndex];
@@ -289,7 +331,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Dialog: Continue -> Input or Category Selection
     btnContinue.addEventListener('click', () => {
         dialogClose.classList.add('hidden');
-        if (selectedTopicSet === 2) {
+        if (selectedTopicSet === 2 || selectedTopicSet === 3) {
             initCategorySelection();
         } else {
             showScreen(screenInput);

@@ -374,6 +374,16 @@ input[type="number"]:focus {
     justify-items: center;
 }
 
+.cards-grid-10 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(5, 1fr);
+    gap: 1rem;
+    margin-top: 1rem;
+    width: 100%;
+    justify-items: center;
+}
+
 .mini-card {
     width: 100px;
     height: 150px;
